@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireframes DerivaAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  .wrap { max-width: 1180px; margin: 0 auto; padding: var(--space-10) var(--space-6); }
+  .list { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: var(--space-4); margin-top: var(--space-8); }
+  .list a { text-decoration: none; color: inherit; }
+  .list img { width: 100%; display: block; aspect-ratio: 16/10; object-fit: cover; object-position: top left; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div style="display:flex; align-items:center; gap:var(--space-3)"><div class="mark">∂</div><span class="wordmark">Deriva<b>AI</b></span></div>
+  <h1 style="margin-top:var(--space-6)">Wireframes</h1>
+  <p class="muted">Desktop, 1440 × 900. Abra cada tela; o editor tem anotações numeradas. Especificação em <span class="mono">../design-system.md</span> e <span class="mono">../layout.md</span>.</p>
+  <div class="list">
+    <a class="card" href="01-library.html"><img src="png/01-library.png" alt=""><div class="card__body"><strong>01 · Início</strong><span class="muted" style="font-size:var(--text-xs)">Continuar, lições, renders recentes</span></div></a>
+    <a class="card" href="02-editor.html"><img src="png/02-editor.png" alt=""><div class="card__body"><strong>02 · Editor de pipeline</strong><span class="muted" style="font-size:var(--text-xs)">Paleta, canvas com portas tipadas, inspetor, dock de execução</span></div></a>
+    <a class="card" href="03-render.html"><img src="png/03-render.png" alt=""><div class="card__body"><strong>03 · Render</strong><span class="muted" style="font-size:var(--text-xs)">Vídeo, execução por nó, cache, saídas</span></div></a>
+    <a class="card" href="04-lesson.html"><img src="png/04-lesson.png" alt=""><div class="card__body"><strong>04 · Lição</strong><span class="muted" style="font-size:var(--text-xs)">Vídeo publicado, roteiro, idiomas, histórico</span></div></a>
+    <a class="card" href="05-components.html"><img src="png/05-components.png" alt=""><div class="card__body"><strong>05 · Componentes</strong><span class="muted" style="font-size:var(--text-xs)">Tokens, status, portas, nó, temas claro e escuro</span></div></a>
+  </div>
+</div>
+</body>
+</html>

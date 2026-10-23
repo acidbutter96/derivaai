@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Componentes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  body { background: #05060a; }
+  .sheet { display: grid; grid-template-columns: 1fr 1fr; min-height: 100vh; }
+  .theme { background: var(--bg-app); color: var(--fg-primary); padding: var(--space-8); display: flex; flex-direction: column; gap: var(--space-8); }
+  .row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+  .sw { display: flex; flex-direction: column; gap: 4px; width: 84px; font-size: 10px; font-family: var(--font-mono); color: var(--fg-muted); }
+  .sw i { height: 36px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); }
+  .type-row { display: flex; align-items: baseline; gap: var(--space-4); }
+  .type-row span:first-child { width: 72px; font-family: var(--font-mono); font-size: 10px; color: var(--fg-faint); }
+  .ports { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 12px; }
+  .ports .port { padding-left: 16px; }
+  .ports .port .handle { left: 0; }
+  .demo-node { position: relative; }
+  .demo-node .node { position: relative; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <section class="theme" data-theme="dark">
+    <div><div class="eyebrow">Tema escuro · padrão</div><h1>Componentes DerivaAI</h1></div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Superfícies e texto</div>
+      <div class="row">
+        <div class="sw"><i style="background:var(--bg-app)"></i>bg-app</div><div class="sw"><i style="background:var(--bg-canvas)"></i>bg-canvas</div><div class="sw"><i style="background:var(--bg-panel)"></i>bg-panel</div><div class="sw"><i style="background:var(--bg-raised)"></i>bg-raised</div><div class="sw"><i style="background:var(--bg-inset)"></i>bg-inset</div><div class="sw"><i style="background:var(--accent)"></i>accent</div>
+      </div>
+    </div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Status</div>
+      <div class="row">
+        <span class="badge status status--pending">aguardando</span><span class="badge status status--running">executando</span><span class="badge status status--cached">cache</span><span class="badge status status--succeeded">ok</span><span class="badge status status--failed">falhou</span><span class="badge status status--skipped">pulado</span><span class="badge status status--canceled">cancelado</span><span class="badge status status--warning">não salvo</span>
+      </div>
+    </div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Portas: cor + forma (● valor JSON, ◆ blob)</div>
+      <div class="ports">
+        <div class="port port--number"><span class="handle"></span>number</div><div class="port port--text"><span class="handle"></span>text</div><div class="port port--bool"><span class="handle"></span>bool</div>
+        <div class="port port--params"><span class="handle"></span>params</div><div class="port port--expr"><span class="handle"></span>expr</div><div class="port port--series port--blob"><span class="handle"></span>series</div>
+        <div class="port port--image port--blob"><span class="handle"></span>image</div><div class="port port--audio port--blob"><span class="handle"></span>audio</div><div class="port port--video port--blob"><span class="handle"></span>video</div>
+      </div>
+      <div class="row" style="margin-top:8px"><div class="port port--expr port--unlinked" style="padding-left:16px"><span class="handle" style="left:0"></span>expr sem conexão (vazado)</div></div>
+    </div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Botões</div>
+      <div class="row"><button class="btn btn--primary"><svg class="icon"><use href="#i-play"/></svg>Renderizar <span class="kbd">⌘↵</span></button><button class="btn">Salvar</button><button class="btn btn--ghost">Histórico</button><button class="btn btn--danger"><svg class="icon"><use href="#i-stop"/></svg>Cancelar</button><button class="btn btn--icon"><svg class="icon"><use href="#i-more"/></svg></button><button class="btn btn--sm">Pequeno</button></div>
+    </div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Campos</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:var(--space-4)">
+        <div class="field"><label class="field__label">Resistência</label><div class="input-group"><input class="input input--mono" value="1000"><span class="unit">Ω</span></div></div>
+        <div class="field"><label class="field__label">Equação</label><input class="input input--mono input--invalid" value="R*C*dV/dt + V ="><span class="field__error">Expressão incompleta na posição 15</span></div>
+      </div>
+    </div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Nó: anatomia</div>
+      <div class="row" style="align-items:flex-start; gap:var(--space-6)">
+        <div class="demo-node"><div class="node cat-math node--selected">
+          <div class="node__head"><span class="node__title">Resolver EDO</span><span class="badge status status--succeeded">0.4 s</span></div>
+          <div class="node__key">math.solve_ode · v1</div>
+          <div class="node__ports"><div class="in"><div class="port port--params"><span class="handle"></span>params <span class="type">params</span></div></div><div class="out"><div class="port port--expr">solution <span class="type">expr</span><span class="handle"></span></div></div></div>
+          <div class="node__preview node__preview--formula">V(t) = V₀ (1 − e<sup>−t/RC</sup>)</div>
+        </div></div>
+        <div class="demo-node"><div class="node cat-animation node--failed">
+          <div class="node__head"><span class="node__title">Cena Manim</span><span class="badge status status--failed">falhou</span></div>
+          <div class="node__key">anim.scene · v1 · fila media</div>
+          <div class="node__ports"><div class="in"><div class="port port--expr"><span class="handle"></span>fn <span class="type">expr</span></div></div><div class="out"><div class="port port--video port--blob">video <span class="type">video</span><span class="handle"></span></div></div></div>
+          <div class="node__error">LaTeX: comando indefinido \tauu na linha 3. <u>Abrir no inspetor</u></div>
+        </div></div>
+      </div>
+    </div>
+
+    <div><div class="eyebrow" style="margin-bottom:10px">Toast</div>
+      <div class="toast"><svg class="icon" style="width:18px;height:18px;color:var(--status-succeeded);flex:none"><use href="#i-check"/></svg><div><strong>v5 salva</strong><div class="muted" style="font-size:var(--text-xs)">2 nós alterados · cache preservado nos outros 5</div></div></div>
+    </div>
+  </section>
+
+  <section class="theme" data-theme="light">
+    <div><div class="eyebrow">Tema claro</div><h1>Componentes DerivaAI</h1></div>
+    <div><div class="eyebrow" style="margin-bottom:10px">Superfícies e texto</div>
+      <div class="row">
+        <div class="sw"><i style="background:var(--bg-app)"></i>bg-app</div><div class="sw"><i style="background:var(--bg-canvas)"></i>bg-canvas</div><div class="sw"><i style="background:var(--bg-panel)"></i>bg-panel</div><div class="sw"><i style="background:var(--bg-raised)"></i>bg-raised</div><div class="sw"><i style="background:var(--bg-inset)"></i>bg-inset</div><div class="sw"><i style="background:var(--accent)"></i>accent</div>
+      </div>
+    </div>
+    <div><div class="eyebrow" style="margin-bottom:10px">Status</div>
+      <div class="row">
+        <span class="badge status status--pending">aguardando</span><span class="badge status status--running">executando</span><span class="badge status status--cached">cache</span><span class="badge status status--succeeded">ok</span><span class="badge status status--failed">falhou</span><span class="badge status status--skipped">pulado</span><span class="badge status status--canceled">cancelado</span><span class="badge status status--warning">não salvo</span>
+      </div>
+    </div>
+    <div><div class="eyebrow" style="margin-bottom:10px">Portas</div>
+      <div class="ports">
+        <div class="port port--number"><span class="handle"></span>number</div><div class="port port--text"><span class="handle"></span>text</div><div class="port port--bool"><span class="handle"></span>bool</div>
+        <div class="port port--params"><span class="handle"></span>params</div><div class="port port--expr"><span class="handle"></span>expr</div><div class="port port--series port--blob"><span class="handle"></span>series</div>
+        <div class="port port--image port--blob"><span class="handle"></span>image</div><div class="port port--audio port--blob"><span class="handle"></span>audio</div><div class="port port--video port--blob"><span class="handle"></span>video</div>
+      </div>
+    </div>
+    <div><div class="eyebrow" style="margin-bottom:10px">Botões</div>
+      <div class="row"><button class="btn btn--primary"><svg class="icon"><use href="#i-play"/></svg>Renderizar <span class="kbd">⌘↵</span></button><button class="btn">Salvar</button><button class="btn btn--ghost">Histórico</button><button class="btn btn--danger"><svg class="icon"><use href="#i-stop"/></svg>Cancelar</button></div>
+    </div>
+    <div><div class="eyebrow" style="margin-bottom:10px">Tipografia</div>
+      <div class="type-row"><span>3xl · 32</span><span style="font-size:var(--text-3xl); font-weight:600">Carga do circuito RC</span></div>
+      <div class="type-row"><span>xl · 20</span><span style="font-size:var(--text-xl); font-weight:600">Execução por nó</span></div>
+      <div class="type-row"><span>md · 14</span><span>Texto de interface padrão em IBM Plex Sans.</span></div>
+      <div class="type-row"><span>mono · 12</span><span class="mono" style="font-size:12px">math.solve_ode · sha256:9f3c…e01a</span></div>
+      <div class="type-row"><span>math</span><span class="math" style="font-size:20px">V(t) = V₀ (1 − e<sup>−t/RC</sup>)</span></div>
+    </div>
+    <div><div class="eyebrow" style="margin-bottom:10px">Nó no canvas claro</div>
+      <div class="canvas" style="height:190px; border-radius:var(--radius-md); border:1px solid var(--border-subtle)">
+        <div class="node cat-narration" style="left:24px; top:24px">
+          <div class="node__head"><span class="node__title">Narração</span><span class="badge status status--running">40%</span></div>
+          <div class="node__key">tts.narrate · v1</div>
+          <div class="node__ports"><div class="in"><div class="port port--text"><span class="handle"></span>text <span class="type">text</span></div></div><div class="out"><div class="port port--audio port--blob">audio <span class="type">audio</span><span class="handle"></span></div></div></div>
+          <div class="node__progress"><span style="width:40%"></span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+<script src="../icons.js"></script>
+</body>
+</html>

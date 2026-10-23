@@ -1,0 +1,6 @@
+# Postgres is not here: derivaai uses the shared instance in devbutter_app/infra
+# (database + role `derivaai`, host port 5436). Only Redis runs locally.
+services:
+  redis:
+    image: redis:7
+    ports: ["6379:6379"]

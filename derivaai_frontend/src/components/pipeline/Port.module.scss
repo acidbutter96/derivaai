@@ -1,0 +1,74 @@
+// Port colors map 1:1 to the --port-* tokens.
+$port-types: number, text, bool, params, expr, series, image, audio, video;
+
+@mixin port-colors {
+  @each $type in $port-types {
+    &[data-type="#{$type}"] {
+      --pc: var(--port-#{$type});
+    }
+  }
+}
+
+.port {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 22px;
+  padding: 0 var(--space-3);
+  color: var(--fg-secondary);
+  --pc: var(--port-text);
+  @include port-colors;
+
+  &[data-side="out"] {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+.name {
+  white-space: nowrap;
+}
+
+.type {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-faint);
+}
+
+.handle {
+  position: absolute;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  background: var(--pc);
+  border: 2px solid var(--bg-panel);
+  border-radius: 50%;
+  --pc: var(--port-text);
+  @include port-colors;
+
+  // invisible 20 px hit area (design-system.md §11)
+  &::after {
+    content: "";
+    position: absolute;
+    inset: -6px;
+  }
+
+  &[data-side="in"] {
+    left: -6px;
+  }
+
+  &[data-side="out"] {
+    right: -6px;
+  }
+
+  &[data-blob] {
+    border-radius: 2px;
+    transform: rotate(45deg);
+  }
+
+  &[data-linked="false"] {
+    background: var(--bg-panel);
+    border-color: var(--pc);
+  }
+}

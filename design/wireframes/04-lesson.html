@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lição: carga do circuito RC</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--space-8); max-width: 1180px; }
+  .script { font-size: var(--text-lg); line-height: 28px; color: var(--fg-secondary); max-width: 68ch; }
+  .script mark { background: var(--accent-soft); color: var(--fg-primary); border-radius: 3px; padding: 0 2px; }
+  .eq { font-family: var(--font-math); font-style: italic; font-size: 22px; text-align: center; padding: var(--space-5); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-panel); margin: var(--space-6) 0; }
+  .side { display: flex; flex-direction: column; gap: var(--space-4); }
+  .box { border: 1px solid var(--border-subtle); border-radius: var(--radius-md); background: var(--bg-panel); padding: var(--space-4); display: flex; flex-direction: column; gap: var(--space-3); }
+  .hist { display: flex; align-items: center; gap: var(--space-2); font-size: var(--text-xs); padding: 6px 0; border-bottom: 1px solid var(--border-subtle); }
+  .hist:last-child { border-bottom: 0; }
+  .hist .grow { flex: 1; }
+</style>
+</head>
+<body>
+<div class="shell">
+  <nav class="sidebar" aria-label="Principal">
+    <div class="sidebar__brand"><div class="mark">∂</div><span class="wordmark">Deriva<b>AI</b></span></div>
+    <a class="nav-item" href="01-library.html"><svg class="icon"><use href="#i-home"/></svg>Início</a>
+    <a class="nav-item" href="#" aria-current="page"><svg class="icon"><use href="#i-lessons"/></svg>Lições<span class="count">4</span></a>
+    <a class="nav-item" href="02-editor.html"><svg class="icon"><use href="#i-pipelines"/></svg>Pipelines<span class="count">6</span></a>
+    <a class="nav-item" href="03-render.html"><svg class="icon"><use href="#i-renders"/></svg>Renders<span class="count">1 ativo</span></a>
+    <a class="nav-item" href="05-components.html"><svg class="icon"><use href="#i-nodes"/></svg>Catálogo de nós</a>
+  </nav>
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs"><span>Lições</span><span class="sep">/</span><strong>Carga do circuito RC</strong></div>
+      <span class="badge status status--succeeded">pronta</span>
+      <div class="topbar__spacer"></div>
+      <div class="seg" role="group" aria-label="Idioma"><button aria-pressed="true">PT-BR</button><button>EN · sem render</button></div>
+      <button class="btn"><svg class="icon"><use href="#i-pipelines"/></svg>Abrir pipeline</button>
+      <button class="btn"><svg class="icon"><use href="#i-download"/></svg>Baixar MP4</button>
+      <button class="btn btn--primary"><svg class="icon"><use href="#i-play"/></svg>Renderizar em EN</button>
+    </header>
+    <main class="page">
+      <div class="layout">
+        <article>
+          <div class="eyebrow">Circuitos elétricos · 1:52</div>
+          <h1 style="font-size:var(--text-3xl); line-height:var(--lh-3xl); margin:6px 0 var(--space-6)">Carga do circuito RC</h1>
+          <div class="player">
+            <svg viewBox="0 0 640 360" width="100%" height="100%" style="position:absolute; inset:0"><rect width="640" height="360" fill="#07080d"/><path d="M60 300 C 140 150, 220 100, 340 86 S 520 76, 600 74" fill="none" stroke="#2fd3d0" stroke-width="3"/><line x1="150" y1="40" x2="150" y2="310" stroke="#ff8a3d" stroke-dasharray="5 5"/><text x="158" y="56" fill="#ff8a3d" font-family="IBM Plex Mono" font-size="13">t = τ  →  63,2% de V₀</text></svg>
+            <div class="player__bar"><svg class="icon" style="width:16px;height:16px"><use href="#i-play"/></svg><span class="mono">0:00 / 1:52</span><div class="player__track"><span style="width:0%"></span></div><span class="mono">CC</span></div>
+          </div>
+          <h3 style="margin:var(--space-8) 0 var(--space-3)">Roteiro</h3>
+          <div class="script">
+            <p>Quando fechamos a chave, o capacitor começa a acumular carga através do resistor. A tensão sobre ele segue a equação</p>
+            <div class="eq">V(t) = V₀ (1 − e<sup>−t / RC</sup>)</div>
+            <p>O produto <mark>τ = RC</mark> é a constante de tempo. Depois de um τ, o capacitor chega a cerca de 63% de V₀; depois de cinco, está praticamente carregado.</p>
+          </div>
+        </article>
+        <aside class="side">
+          <div class="box">
+            <div class="eyebrow">Publicado</div>
+            <div style="display:flex; align-items:center; gap:var(--space-2)"><span class="mono">r-0191</span><span class="badge status status--succeeded">ok</span><span class="lang">pt-BR</span></div>
+            <div class="muted" style="font-size:var(--text-xs)">Pipeline v3 · há 2 dias</div>
+          </div>
+          <div class="box">
+            <div class="eyebrow">Parâmetros</div>
+            <dl class="kv" style="display:grid; grid-template-columns:auto 1fr; gap:6px 12px; margin:0; font-size:var(--text-sm)">
+              <dt class="muted">R</dt><dd class="mono" style="margin:0">1,0 kΩ</dd>
+              <dt class="muted">C</dt><dd class="mono" style="margin:0">1,0 mF</dd>
+              <dt class="muted">V₀</dt><dd class="mono" style="margin:0">5,0 V</dd>
+              <dt class="muted">τ</dt><dd class="mono" style="margin:0">1,0 s</dd>
+            </dl>
+          </div>
+          <div class="box">
+            <div class="eyebrow">Histórico de renders</div>
+            <div class="hist"><span class="mono">r-0192</span><span class="badge status status--running">62%</span><span class="grow muted">v4</span><span class="btn btn--sm btn--ghost">ver</span></div>
+            <div class="hist"><span class="mono">r-0191</span><span class="badge status status--succeeded">ok</span><span class="grow muted">v3 · publicado</span><span class="badge badge--accent">atual</span></div>
+            <div class="hist"><span class="mono">r-0185</span><span class="badge status status--succeeded">ok</span><span class="grow muted">v2</span><span class="btn btn--sm btn--ghost">publicar</span></div>
+            <div class="hist"><span class="mono">r-0180</span><span class="badge status status--failed">falhou</span><span class="grow muted">v1 · tts.narrate</span><span class="btn btn--sm btn--ghost">ver</span></div>
+          </div>
+        </aside>
+      </div>
+    </main>
+  </div>
+</div>
+<script src="../icons.js"></script>
+</body>
+</html>

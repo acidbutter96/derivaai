@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editor de pipeline</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../tokens.css">
+<link rel="stylesheet" href="../components.css">
+<style>
+  .work { flex: 1; display: grid; grid-template-columns: var(--palette-w) 1fr var(--inspector-w); min-height: 0; }
+  .center { display: flex; flex-direction: column; min-width: 0; min-height: 0; border-left: 1px solid var(--border-subtle); border-right: 1px solid var(--border-subtle); }
+  .canvas { flex: 1; }
+  .world { position: absolute; left: 0; top: 0; width: 1060px; height: 820px; transform-origin: 0 0; transform: translate(14px, 46px) scale(0.72); }
+  .cfg { display: grid; grid-template-columns: auto 1fr; gap: 4px 8px; padding: 6px var(--space-3) 10px; font-family: var(--font-mono); font-size: 11px; color: var(--fg-secondary); }
+  .cfg span:nth-child(odd) { color: var(--fg-faint); }
+  .text-preview { padding: 8px 10px; font-size: 11px; line-height: 16px; color: var(--fg-muted); }
+  .minimap { right: 12px; bottom: 12px; width: 164px; height: 104px; position: absolute; }
+  .dock__body { display: grid; grid-template-columns: 1.45fr 1fr; min-height: 0; flex: 1; }
+  .dock__body > div { padding: var(--space-3) var(--space-4); overflow: hidden; }
+  .dock__body > div + div { border-left: 1px solid var(--border-subtle); }
+  .slider { height: 4px; border-radius: 2px; background: var(--bg-active); position: relative; margin: 8px 0; }
+  .slider span { position: absolute; left: 0; top: 0; bottom: 0; width: 50%; background: var(--accent); border-radius: 2px; }
+  .slider i { position: absolute; left: 50%; top: 50%; width: 14px; height: 14px; margin: -7px; border-radius: 50%; background: var(--fg-primary); box-shadow: var(--shadow-sm); }
+  .kv { display: grid; grid-template-columns: 92px 1fr; gap: 6px var(--space-2); font-size: var(--text-xs); }
+  .kv dt { color: var(--fg-faint); } .kv dd { margin: 0; font-family: var(--font-mono); font-size: 11px; color: var(--fg-secondary); overflow: hidden; text-overflow: ellipsis; }
+  .select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--fg-muted) 50%), linear-gradient(135deg, var(--fg-muted) 50%, transparent 50%); background-position: calc(100% - 15px) 14px, calc(100% - 10px) 14px; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 28px; }
+</style>
+</head>
+<body>
+<div class="shell shell--editor">
+  <!-- Collapsed sidebar in the editor to maximise canvas -->
+  <nav class="sidebar" aria-label="Principal">
+    <div class="mark" title="DerivaAI" style="margin-bottom:var(--space-4)">∂</div>
+    <a class="nav-item" href="01-library.html" title="Início"><svg class="icon"><use href="#i-home"/></svg></a>
+    <a class="nav-item" href="04-lesson.html" title="Lições"><svg class="icon"><use href="#i-lessons"/></svg></a>
+    <a class="nav-item" href="#" aria-current="page" title="Pipelines"><svg class="icon"><use href="#i-pipelines"/></svg></a>
+    <a class="nav-item" href="03-render.html" title="Renders"><svg class="icon"><use href="#i-renders"/></svg></a>
+    <div class="sidebar__footer"><a class="nav-item" href="#" title="Configurações"><svg class="icon"><use href="#i-settings"/></svg></a></div>
+  </nav>
+
+  <div class="main">
+    <header class="topbar">
+      <div class="crumbs"><span>Pipelines</span><span class="sep">/</span><strong>Carga do circuito RC</strong></div>
+      <span class="badge mono">v4</span>
+      <span class="badge status status--warning">não salvo</span>
+      <span class="badge status status--succeeded">grafo válido</span>
+      <div class="topbar__spacer"></div>
+      <div class="seg" role="group" aria-label="Idioma do render"><button aria-pressed="true">PT-BR</button><button>EN</button></div>
+      <button class="btn btn--ghost"><svg class="icon"><use href="#i-history"/></svg>Histórico</button>
+      <button class="btn"><svg class="icon"><use href="#i-save"/></svg>Salvar <span class="kbd">⌘S</span></button>
+      <button class="btn btn--primary"><svg class="icon"><use href="#i-play"/></svg>Renderizar <span class="kbd">⌘↵</span></button>
+    </header>
+
+    <div class="work">
+      <!-- ============ Palette ============ -->
+      <aside class="panel" aria-label="Nós">
+        <div class="panel__head"><span class="panel__title">Nós</span><div class="topbar__spacer"></div><span class="kbd">/</span></div>
+        <div class="panel__body">
+          <div class="search" style="margin-bottom:var(--space-4)"><svg class="icon"><use href="#i-search"/></svg><input class="input" placeholder="Buscar nós…"></div>
+          <div class="eyebrow" style="margin-bottom:6px">Entrada</div>
+          <div class="palette-group cat-io">
+            <div class="palette-item"><span class="swatch"></span>Parâmetros<span class="key">io.params</span></div>
+            <div class="palette-item"><span class="swatch"></span>Texto<span class="key">io.text</span></div>
+            <div class="palette-item"><span class="swatch"></span>Upload<span class="key">io.upload</span></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px">Matemática</div>
+          <div class="palette-group cat-math">
+            <div class="palette-item"><span class="swatch"></span>Resolver EDO<span class="key">math.solve_ode</span></div>
+            <div class="palette-item"><span class="swatch"></span>Avaliar expressão<span class="key">math.evaluate</span></div>
+            <div class="palette-item"><span class="swatch"></span>Simplificar<span class="key">math.simplify</span></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px">Gráfico</div>
+          <div class="palette-group cat-plot">
+            <div class="palette-item"><span class="swatch"></span>Plotar função<span class="key">plot.function</span></div>
+            <div class="palette-item"><span class="swatch"></span>Plotar série<span class="key">plot.series</span></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px">Narração</div>
+          <div class="palette-group cat-narration">
+            <div class="palette-item"><span class="swatch"></span>Narrar texto<span class="key">tts.narrate</span></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px">Animação</div>
+          <div class="palette-group cat-animation">
+            <div class="palette-item"><span class="swatch"></span>Carga do capacitor<span class="key">anim.rc_charging</span></div>
+            <div class="palette-item"><span class="swatch"></span>Cena Manim<span class="key">anim.scene</span></div>
+          </div>
+          <div class="eyebrow" style="margin-bottom:6px">Vídeo</div>
+          <div class="palette-group cat-video">
+            <div class="palette-item"><span class="swatch"></span>Compor vídeo<span class="key">video.compose</span></div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ============ Canvas + dock ============ -->
+      <section class="center">
+        <div class="canvas" id="canvas">
+          <div class="canvas__hud" style="left:12px; top:12px">
+            <div class="hud-card" style="display:flex; align-items:center; gap:10px; padding:6px 10px; font-size:var(--text-xs)">
+              <span class="status badge status--running" style="height:18px">renderizando 4/7</span>
+              <span class="muted">7 nós · 7 conexões · 3 do cache</span>
+            </div>
+          </div>
+          <div class="canvas__hud" style="left:12px; bottom:12px">
+            <div class="hud-card" style="display:flex; align-items:center; padding:2px">
+              <button class="btn btn--ghost btn--icon btn--sm"><svg class="icon"><use href="#i-zoomout"/></svg></button>
+              <span class="mono" style="font-size:11px; width:40px; text-align:center">72%</span>
+              <button class="btn btn--ghost btn--icon btn--sm"><svg class="icon"><use href="#i-zoomin"/></svg></button>
+              <button class="btn btn--ghost btn--icon btn--sm" title="Enquadrar"><svg class="icon"><use href="#i-fit"/></svg></button>
+            </div>
+          </div>
+          <div class="hud-card minimap" aria-hidden="true">
+            <svg viewBox="0 0 164 104" width="164" height="104">
+              <g fill="var(--bg-active)"><rect x="8" y="10" width="30" height="22" rx="2"/><rect x="8" y="58" width="30" height="16" rx="2"/><rect x="46" y="10" width="30" height="20" rx="2"/><rect x="46" y="58" width="30" height="16" rx="2"/><rect x="84" y="6" width="30" height="26" rx="2"/><rect x="84" y="46" width="30" height="20" rx="2"/><rect x="122" y="40" width="30" height="24" rx="2"/></g>
+              <rect x="4" y="4" width="152" height="94" rx="3" fill="none" stroke="var(--accent)" stroke-width="1.2"/>
+            </svg>
+          </div>
+
+          <div class="world" id="world">
+            <svg class="canvas__edges" id="edges"></svg>
+
+            <!-- io.params -->
+            <div class="node cat-io" style="left:30px; top:40px" data-node="params">
+              <div class="node__head"><span class="node__title">Parâmetros do circuito</span><span class="badge status status--cached">cache</span></div>
+              <div class="node__key">io.params · v1</div>
+              <div class="cfg"><span>R</span><span>1.0 kΩ</span><span>C</span><span>1.0 mF</span><span>V₀</span><span>5.0 V</span></div>
+              <div class="node__ports"><div class="in"></div><div class="out">
+                <div class="port port--params" data-port="params.values">values <span class="type">params</span><span class="handle"></span></div>
+              </div></div>
+            </div>
+
+            <!-- math.solve_ode -->
+            <div class="node cat-math" style="left:290px; top:40px" data-node="solve">
+              <div class="node__head"><span class="node__title">Resolver EDO</span><span class="badge status status--cached">cache</span></div>
+              <div class="node__key">math.solve_ode · v1</div>
+              <div class="node__ports">
+                <div class="in"><div class="port port--params" data-port="solve.params"><span class="handle"></span>params <span class="type">params</span></div></div>
+                <div class="out"><div class="port port--expr" data-port="solve.solution">solution <span class="type">expr</span><span class="handle"></span></div></div>
+              </div>
+              <div class="node__preview node__preview--formula">V(t) = V₀ (1 − e<sup>−t/RC</sup>)</div>
+            </div>
+
+            <!-- plot.function -->
+            <div class="node cat-plot" style="left:550px; top:20px" data-node="plot">
+              <div class="node__head"><span class="node__title">Curva de carga</span><span class="badge status status--cached">cache</span></div>
+              <div class="node__key">plot.function · v1</div>
+              <div class="node__ports">
+                <div class="in"><div class="port port--expr" data-port="plot.fn"><span class="handle"></span>fn <span class="type">expr</span></div></div>
+                <div class="out"><div class="port port--image port--blob" data-port="plot.image">image <span class="type">image</span><span class="handle"></span></div></div>
+              </div>
+              <div class="node__preview" style="height:96px; position:relative">
+                <svg viewBox="0 0 200 96" width="100%" height="96" preserveAspectRatio="none">
+                  <g stroke="var(--border-default)" stroke-width="1"><line x1="20" y1="80" x2="196" y2="80"/><line x1="20" y1="8" x2="20" y2="80"/></g>
+                  <line x1="20" y1="20" x2="196" y2="20" stroke="var(--fg-faint)" stroke-dasharray="3 3"/>
+                  <line x1="55" y1="8" x2="55" y2="80" stroke="var(--accent)" stroke-dasharray="3 3"/>
+                  <path d="M20 80 C 40 45, 60 32, 90 26 S 150 21, 196 20.5" fill="none" stroke="var(--port-series)" stroke-width="2"/>
+                  <text x="58" y="16" fill="var(--accent)" font-size="9" font-family="IBM Plex Mono">τ = RC</text>
+                  <text x="160" y="16" fill="var(--fg-faint)" font-size="9" font-family="IBM Plex Mono">V₀</text>
+                </svg>
+              </div>
+            </div>
+
+            <!-- anim.rc_charging (running) -->
+            <div class="node cat-animation" style="left:550px; top:330px" data-node="anim">
+              <div class="node__head"><span class="node__title">Animação da carga</span><span class="badge status status--running">62%</span></div>
+              <div class="node__key">anim.rc_charging · v1 · fila media</div>
+              <div class="node__ports">
+                <div class="in"><div class="port port--expr" data-port="anim.fn"><span class="handle"></span>fn <span class="type">expr</span></div></div>
+                <div class="out"><div class="port port--video port--blob" data-port="anim.video">video <span class="type">video</span><span class="handle"></span></div></div>
+              </div>
+              <div class="node__progress"><span style="width:62%"></span></div>
+            </div>
+
+            <!-- io.text -->
+            <div class="node cat-io" style="left:30px; top:430px" data-node="script">
+              <div class="node__head"><span class="node__title">Roteiro da aula</span><span class="badge status status--succeeded">ok</span></div>
+              <div class="node__key">io.text · v1</div>
+              <div class="node__preview text-preview">Quando fechamos a chave, o capacitor começa a acumular carga. Depois de uma constante de tempo τ = RC, ele chega a cerca de 63% de V₀…</div>
+              <div class="node__ports"><div class="in"></div><div class="out">
+                <div class="port port--text" data-port="script.text">text <span class="type">text</span><span class="handle"></span></div>
+              </div></div>
+            </div>
+
+            <!-- tts.narrate (selected, re-ran because script changed) -->
+            <div class="node cat-narration node--selected" style="left:290px; top:430px" data-node="tts">
+              <div class="node__head"><span class="node__title">Narração</span><span class="badge status status--succeeded">8.2 s</span></div>
+              <div class="node__key">tts.narrate · v1</div>
+              <div class="node__ports">
+                <div class="in"><div class="port port--text" data-port="tts.text"><span class="handle"></span>text <span class="type">text</span></div></div>
+                <div class="out"><div class="port port--audio port--blob" data-port="tts.audio">audio <span class="type">audio</span><span class="handle"></span></div></div>
+              </div>
+              <div class="node__preview" style="padding:6px 10px; display:flex; align-items:center; gap:8px">
+                <svg class="icon" style="width:14px;height:14px;color:var(--fg-secondary)"><use href="#i-play"/></svg>
+                <div class="wave" id="wave1"></div>
+                <span class="mono faint" style="font-size:10px">0:48</span>
+              </div>
+            </div>
+
+            <!-- video.compose (pending) -->
+            <div class="node cat-video" style="left:810px; top:280px" data-node="compose">
+              <div class="node__head"><span class="node__title">Vídeo final</span><span class="badge status status--pending">aguardando</span></div>
+              <div class="node__key">video.compose · v1 · fila media</div>
+              <div class="node__ports">
+                <div class="in">
+                  <div class="port port--video port--blob" data-port="compose.scene"><span class="handle"></span>scene <span class="type">video</span></div>
+                  <div class="port port--image port--blob" data-port="compose.overlay"><span class="handle"></span>overlay <span class="type">image</span></div>
+                  <div class="port port--audio port--blob" data-port="compose.narration"><span class="handle"></span>narration <span class="type">audio</span></div>
+                </div>
+                <div class="out"><div class="port port--video port--blob" data-port="compose.video">video <span class="type">video</span><span class="handle"></span></div></div>
+              </div>
+              <div class="node__preview" style="height:70px; position:relative"><div class="ph">aguardando cena e narração</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ Run dock ============ -->
+        <div class="dock">
+          <div class="panel__head" style="gap:var(--space-4)">
+            <div class="tabs"><button class="tab" aria-selected="true">Execução</button><button class="tab">Saídas</button><button class="tab">Versões</button></div>
+            <span class="mono muted" style="font-size:11px">render r-0192 · v4 · pt-BR · 00:41</span>
+            <div class="topbar__spacer"></div>
+            <button class="btn btn--sm btn--danger"><svg class="icon"><use href="#i-stop"/></svg>Cancelar</button>
+          </div>
+          <div class="dock__body">
+            <div>
+              <div class="timeline">
+                <div class="row-label"><span class="badge status status--cached" style="padding:0 4px; border:0; background:none"></span>Parâmetros do circuito</div><div class="track"><div class="bar bar--cached" style="left:0; width:2%"></div></div><div class="dur">cache</div>
+                <div class="row-label"><span class="badge status status--cached" style="padding:0 4px; border:0; background:none"></span>Resolver EDO</div><div class="track"><div class="bar bar--cached" style="left:2%; width:2%"></div></div><div class="dur">cache</div>
+                <div class="row-label"><span class="badge status status--cached" style="padding:0 4px; border:0; background:none"></span>Curva de carga</div><div class="track"><div class="bar bar--cached" style="left:4%; width:2%"></div></div><div class="dur">cache</div>
+                <div class="row-label"><span class="badge status status--succeeded" style="padding:0 4px; border:0; background:none"></span>Roteiro da aula</div><div class="track"><div class="bar" style="left:0; width:1%"></div></div><div class="dur">0.1 s</div>
+                <div class="row-label"><span class="badge status status--succeeded" style="padding:0 4px; border:0; background:none"></span>Narração</div><div class="track"><div class="bar" style="left:1%; width:20%"></div></div><div class="dur">8.2 s</div>
+                <div class="row-label"><span class="badge status status--running" style="padding:0 4px; border:0; background:none"></span>Animação da carga</div><div class="track"><div class="bar" style="--c:var(--status-running); left:6%; width:58%"></div></div><div class="dur">24 s…</div>
+                <div class="row-label"><span class="badge status status--pending" style="padding:0 4px; border:0; background:none"></span>Vídeo final</div><div class="track"></div><div class="dur">—</div>
+              </div>
+            </div>
+            <div class="log">
+              <div><span class="t">00:00.02</span>render r-0192 criado (v4, pt-BR)</div>
+              <div><span class="t">00:00.03</span><span style="color:var(--status-cached)">cache</span> io.params, math.solve_ode, plot.function</div>
+              <div><span class="t">00:00.05</span>io.text ok</div>
+              <div><span class="t">00:00.06</span>tts.narrate iniciado (fila cpu)</div>
+              <div><span class="t">00:02.40</span>anim.rc_charging iniciado (fila media)</div>
+              <div><span class="t">00:08.31</span><span style="color:var(--status-succeeded)">ok</span> tts.narrate · 0:48 de áudio</div>
+              <div><span class="t">00:41.02</span>anim.rc_charging 62%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============ Inspector ============ -->
+      <aside class="panel" aria-label="Inspetor">
+        <div class="panel__head">
+          <div class="tabs"><button class="tab" aria-selected="true">Config</button><button class="tab">Portas</button><button class="tab">Saída</button></div>
+          <div class="topbar__spacer"></div>
+          <button class="btn btn--ghost btn--icon btn--sm"><svg class="icon"><use href="#i-more"/></svg></button>
+        </div>
+        <div class="panel__body">
+          <div class="panel__section">
+            <div style="display:flex; align-items:center; gap:var(--space-2)">
+              <span style="width:4px; height:28px; border-radius:2px; background:var(--cat-narration)"></span>
+              <div style="flex:1"><h3 style="font-size:var(--text-md)">Narração</h3><div class="mono faint" style="font-size:11px">tts.narrate · v1 · fila cpu</div></div>
+              <span class="badge status status--succeeded">ok</span>
+            </div>
+            <p class="muted" style="margin:0; font-size:var(--text-xs)">Converte o texto em áudio narrado. Reexecutado neste render porque o roteiro mudou.</p>
+          </div>
+          <div class="panel__section">
+            <div class="field"><label class="field__label">Rótulo</label><input class="input" value="Narração"></div>
+            <div class="field">
+              <label class="field__label"><span>Idioma</span><span class="faint">herdado do render</span></label>
+              <select class="input select"><option>Do render (pt-BR)</option></select>
+            </div>
+            <div class="field"><label class="field__label">Voz</label><select class="input select"><option>Ana · pt-BR · neutra</option></select></div>
+            <div class="field">
+              <label class="field__label"><span>Velocidade</span><span class="mono">1.00×</span></label>
+              <div class="slider"><span></span><i></i></div>
+            </div>
+            <div class="field">
+              <label class="field__label">Pausa entre frases</label>
+              <div class="input-group"><input class="input input--mono" value="300"><span class="unit">ms</span></div>
+              <span class="field__hint">Mudar qualquer campo invalida o cache deste nó e dos seguintes.</span>
+            </div>
+          </div>
+          <div class="panel__section">
+            <div class="eyebrow">Última saída</div>
+            <div style="display:flex; align-items:center; gap:10px; padding:8px 10px; border-radius:var(--radius-sm); background:var(--bg-inset); border:1px solid var(--border-subtle)">
+              <button class="btn btn--icon btn--sm"><svg class="icon"><use href="#i-play"/></svg></button>
+              <div class="wave" id="wave2" style="flex:1; overflow:hidden"></div>
+              <span class="mono faint" style="font-size:11px">0:48</span>
+            </div>
+            <dl class="kv" style="margin:0">
+              <dt>blob</dt><dd>sha256:9f3c…e01a</dd>
+              <dt>formato</dt><dd>audio/wav · 1.5 MB</dd>
+              <dt>cache key</dt><dd>c41b…77d2</dd>
+            </dl>
+          </div>
+          <div class="panel__section" style="flex-direction:row">
+            <button class="btn" style="flex:1"><svg class="icon"><use href="#i-play"/></svg>Executar até aqui</button>
+            <button class="btn btn--icon" title="Copiar referência"><svg class="icon"><use href="#i-copy"/></svg></button>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Annotations (wireframe only) -->
+<div class="anno" style="left:60px; top:800px"><b>1</b>← sidebar recolhida no editor</div>
+<div class="anno" style="left:918px; top:96px"><b>2</b>salvar = nova versão</div>
+<div class="anno" style="left:84px; top:150px"><b>3</b>catálogo vem do código (GET /nodes)</div>
+<div class="anno" style="left:545px; top:282px"><b>4</b>portas tipadas: cor + forma</div>
+<div class="anno" style="left:745px; top:440px"><b>5</b>status por nó via SSE</div>
+<div class="anno" style="left:1200px; top:226px"><b>6</b>form gerado do config_schema</div>
+<div class="anno" style="left:560px; top:704px"><b>7</b>timeline: cache vs execução</div>
+
+<script src="../icons.js"></script>
+<script>
+  // Waveform placeholders
+  for (const id of ["wave1", "wave2"]) {
+    const el = document.getElementById(id);
+    const n = id === "wave1" ? 26 : 40;
+    el.innerHTML = Array.from({ length: n }, (_, i) => `<i style="height:${6 + Math.abs(Math.sin(i * 1.7) * 18 + Math.cos(i * 0.6) * 4)}px"></i>`).join("");
+  }
+  // Draw typed edges between port handles (world coordinates, unscaled)
+  const edges = [
+    ["params.values", "solve.params", "--port-params"],
+    ["solve.solution", "plot.fn", "--port-expr"],
+    ["solve.solution", "anim.fn", "--port-expr", "flow"],
+    ["script.text", "tts.text", "--port-text"],
+    ["anim.video", "compose.scene", "--port-video", "dim"],
+    ["plot.image", "compose.overlay", "--port-image"],
+    ["tts.audio", "compose.narration", "--port-audio"],
+  ];
+  function draw() {
+    const world = document.getElementById("world");
+    const scale = world.getBoundingClientRect().width / world.offsetWidth;
+    const wr = world.getBoundingClientRect();
+    const pt = (id) => {
+      const h = document.querySelector(`[data-port="${id}"] .handle`).getBoundingClientRect();
+      return [(h.left + h.width / 2 - wr.left) / scale, (h.top + h.height / 2 - wr.top) / scale];
+    };
+    document.getElementById("edges").innerHTML = edges.map(([a, b, c, mod]) => {
+      const [x1, y1] = pt(a), [x2, y2] = pt(b);
+      const dx = Math.max(60, (x2 - x1) * 0.5);
+      return `<path class="edge ${mod ? "edge--" + mod : ""}" stroke="var(${c})" d="M${x1},${y1} C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}"/>`;
+    }).join("");
+  }
+  (document.fonts ? document.fonts.ready : Promise.resolve()).then(draw);
+  window.addEventListener("resize", draw);
+</script>
+</body>
+</html>

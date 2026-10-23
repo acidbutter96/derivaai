@@ -1,0 +1,9 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+# local Claude Code config (machine-specific paths)
+.claude/
+# the root has no package.json; a stray `yarn` here leaves these behind
+/node_modules/
+/yarn.lock

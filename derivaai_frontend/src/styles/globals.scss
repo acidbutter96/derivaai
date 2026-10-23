@@ -1,0 +1,93 @@
+@use "./tokens";
+@use "styles/mixins" as *;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+body {
+  background: var(--bg-app);
+  color: var(--fg-primary);
+  font-family: var(--font-sans);
+  font-size: var(--text-md);
+  line-height: var(--lh-md);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+  font-weight: var(--weight-semibold);
+}
+
+h1 {
+  font-size: var(--text-2xl);
+  line-height: var(--lh-2xl);
+}
+
+h2 {
+  font-size: var(--text-xl);
+  line-height: var(--lh-xl);
+}
+
+h3 {
+  font-size: var(--text-lg);
+  line-height: var(--lh-lg);
+}
+
+a {
+  color: inherit;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+// Utilities shared across screens
+.mono {
+  font-family: var(--font-mono);
+}
+
+.math {
+  font-family: var(--font-math);
+  font-style: italic;
+}
+
+.muted {
+  color: var(--fg-muted);
+}
+
+.faint {
+  color: var(--fg-faint);
+}
+
+.eyebrow {
+  @include eyebrow;
+}
+
+.sr-only {
+  @include visually-hidden;
+}
+
+// Everything that animates collapses under reduced motion (design-system.md §10)
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

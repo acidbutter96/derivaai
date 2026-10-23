@@ -1,0 +1,28 @@
+@use "styles/mixins" as *;
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.tab {
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  color: var(--fg-muted);
+  background: none;
+  border: 0;
+  height: 40px;
+  padding: 0 var(--space-2);
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  @include focus-ring;
+
+  &:hover {
+    color: var(--fg-primary);
+  }
+
+  &[aria-selected="true"] {
+    color: var(--fg-primary);
+    border-color: var(--accent);
+  }
+}
