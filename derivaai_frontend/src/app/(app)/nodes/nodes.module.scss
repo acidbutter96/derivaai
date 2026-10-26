@@ -1,0 +1,104 @@
+@use "styles/mixins" as *;
+
+$categories: io, math, plot, narration, animation, audio, video;
+
+.catalog {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.search {
+  flex: 1;
+  min-width: 240px;
+  max-width: 420px;
+}
+
+.category {
+  width: 220px;
+}
+
+.scroll {
+  overflow-x: auto;
+
+  table {
+    min-width: 900px;
+  }
+}
+
+.name {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: var(--weight-medium);
+}
+
+.description {
+  margin-top: 2px;
+  max-width: 44ch;
+  font-size: var(--text-xs);
+  color: var(--fg-muted);
+}
+
+.cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  --cat: var(--cat-io);
+
+  @each $cat in $categories {
+    &[data-category="#{$cat}"] {
+      --cat: var(--cat-#{$cat});
+    }
+  }
+
+  &::before {
+    content: "";
+    width: 3px;
+    height: 14px;
+    border-radius: 2px;
+    background: var(--cat);
+  }
+}
+
+.ports {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.port {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: var(--text-xs);
+  white-space: nowrap;
+
+  :global(.faint) {
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+}
+
+// The handle is absolutely placed on a node edge; here it sits inline.
+.ports .port .handle {
+  position: relative;
+  top: auto;
+  left: auto;
+  right: auto;
+  flex: none;
+}
+
+.empty {
+  margin: 0;
+  padding: var(--space-6);
+  text-align: center;
+  color: var(--fg-muted);
+}

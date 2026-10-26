@@ -33,6 +33,11 @@
   padding: var(--space-1) var(--space-2) var(--space-4);
   @include focus-ring;
 
+  // the 56 px rail has no room for side padding around the 28 px mark
+  .sidebar[data-collapsed="true"] & {
+    padding-inline: 0;
+  }
+
   @include down($bp-tablet) {
     padding: 0 var(--space-2) 0 0;
   }

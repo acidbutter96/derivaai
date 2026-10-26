@@ -31,6 +31,16 @@
   padding: 0 var(--space-4);
   border-bottom: 1px solid var(--border-subtle);
   background: var(--bg-panel);
+
+  // narrow screens: actions scroll inside the bar instead of widening the page
+  @include down($bp-tablet) {
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    > * {
+      flex-shrink: 0;
+    }
+  }
 }
 
 .spacer {

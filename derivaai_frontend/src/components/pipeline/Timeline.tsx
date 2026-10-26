@@ -17,14 +17,17 @@ interface TimelineRowProps {
   width?: number;
   /** Duration text, mono and right-aligned: "8.2 s", "cache" or "–". */
   duration: ReactNode;
+  /** Worker queue (`cpu` / `media`), shown at the end of the label. */
+  lane?: string;
 }
 
-export function TimelineRow({ label, status, start = 0, width = 0, duration }: TimelineRowProps) {
+export function TimelineRow({ label, status, start = 0, width = 0, duration, lane }: TimelineRowProps) {
   return (
     <div role="row" className={styles.row}>
       <div role="cell" className={styles.label}>
         <StatusDot status={status} />
         <span>{label}</span>
+        {lane ? <span className={styles.lane}>{lane}</span> : null}
       </div>
       <div role="cell" className={styles.track}>
         {width > 0 ? (

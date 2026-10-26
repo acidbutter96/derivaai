@@ -21,6 +21,13 @@
   color: var(--fg-secondary);
 }
 
+.lane {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--fg-faint);
+}
+
 .track {
   position: relative;
   height: 14px;

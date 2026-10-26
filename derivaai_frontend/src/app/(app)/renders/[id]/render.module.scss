@@ -1,0 +1,99 @@
+@use "styles/mixins" as *;
+
+.top {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: var(--space-8);
+
+  @include up($bp-wide) {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+}
+
+.poster {
+  position: absolute;
+  inset: 12% 10% 18%;
+  display: grid;
+  place-items: center;
+
+  &[data-pending] {
+    inset: 0;
+    color: rgba(236, 239, 246, 0.6);
+    font-size: var(--text-sm);
+  }
+}
+
+.posterFormula {
+  position: absolute;
+  right: 0;
+  bottom: -8%;
+  font-size: var(--text-lg);
+}
+
+.summary {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+
+  p {
+    margin: var(--space-1) 0 0;
+    font-size: var(--text-sm);
+  }
+}
+
+.stats {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.failIcon {
+  color: var(--status-failed);
+}
+
+.panel {
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.execution {
+  display: grid;
+  gap: var(--space-6);
+  grid-template-columns: minmax(0, 1fr);
+  padding: var(--space-4);
+
+  @include up($bp-wide) {
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  }
+}
+
+.log {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.outputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-8);
+
+  h2 {
+    font-size: var(--text-lg);
+    line-height: var(--lh-lg);
+  }
+}
+
+.outputGrid {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}

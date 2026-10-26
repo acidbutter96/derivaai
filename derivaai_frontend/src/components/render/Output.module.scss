@@ -1,0 +1,34 @@
+.card {
+  &[data-final] {
+    border-color: var(--accent);
+  }
+}
+
+.media {
+  display: grid;
+  place-items: center;
+}
+
+.wave {
+  width: 70%;
+  justify-content: center;
+}
+
+.videoIcon {
+  color: var(--fg-muted);
+
+  .card[data-final] & {
+    color: var(--accent);
+  }
+}
+
+.title {
+  font-size: var(--text-md);
+  line-height: var(--lh-md);
+}
+
+.sha {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  color: var(--fg-faint);
+}
