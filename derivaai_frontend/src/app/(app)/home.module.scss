@@ -1,0 +1,127 @@
+@use "styles/mixins" as *;
+
+.search {
+  width: 360px;
+  max-width: 40vw;
+
+  @include down($bp-tablet) {
+    display: none;
+  }
+}
+
+.top {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: minmax(0, 1fr);
+  margin-bottom: var(--space-10);
+
+  @include up($bp-wide) {
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+}
+
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  background: var(--bg-panel);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+
+  @media (min-width: 640px) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.heroGraph {
+  @include canvas-grid;
+  min-height: 200px;
+  padding: var(--space-3);
+  border-right: 1px solid var(--border-subtle);
+}
+
+.heroText {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--space-3);
+  padding: var(--space-6);
+
+  p {
+    margin: 0;
+    font-size: var(--text-sm);
+  }
+}
+
+.heroMeta,
+.heroActions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.heroActions {
+  margin-top: var(--space-1);
+}
+
+.kpis {
+  display: grid;
+  gap: var(--space-4);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.template {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: var(--fg-secondary);
+  @include focus-ring;
+
+  &:hover {
+    border-color: var(--accent);
+  }
+
+  > span {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    font-size: var(--text-xs);
+  }
+
+  strong {
+    color: var(--fg-primary);
+    font-size: var(--text-sm);
+  }
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-10);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  h2 {
+    font-size: var(--text-lg);
+    line-height: var(--lh-lg);
+  }
+}
+
+.more {
+  font-size: var(--text-sm);
+  color: var(--fg-muted);
+
+  &:hover {
+    color: var(--fg-primary);
+  }
+}

@@ -11,6 +11,7 @@ export { Panel, PanelBody, PanelHead, PanelSection, PanelTitle } from "./Panel";
 export { SegmentedControl } from "./SegmentedControl";
 export type { SegmentedOption } from "./SegmentedControl";
 export { Slider } from "./Slider";
+export { Callout, Stat } from "./Stat";
 export { Table } from "./Table";
 export { TabPanel, Tabs } from "./Tabs";
 export type { TabItem } from "./Tabs";
