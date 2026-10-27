@@ -2,11 +2,11 @@
 
 Meta: a lição de teste "carga do circuito RC", em pt-BR, saindo em vídeo. Cada fatia é entregável e testável.
 
-Já feito: esqueleto do backend (5 domínios, fila, executor, 28 testes) e a fatia 1 (fundação, validada com Postgres e Redis reais). Não há repositório remoto ainda, então as fatias não estão como issues.
+Já feito: esqueleto do backend (5 domínios, fila, executor, 29 testes) e a fatia 1 (fundação, validada com Postgres e Redis reais). Não há repositório remoto ainda, então as fatias não estão como issues.
 
 | # | Fatia | Pronto quando |
 |---|---|---|
-| 1 | ✅ **Fundação**: `poetry install`, migration inicial revisada, Postgres e Redis no compose, API e worker no ar | `/health` responde e um render `passthrough` termina `succeeded` com Postgres e Redis reais |
+| 1 | ✅ **Fundação**: `poetry install`, migration inicial revisada, Postgres e Redis da infra do devbutter_app, API e worker no ar | `/health` responde e um render `passthrough` termina `succeeded` com Postgres e Redis reais |
 | 2 | **Nós de matemática e gráfico**: `sympy.solve` (EDO do RC, V(t) = V0(1 - e^(-t/RC))) e `plot.matplotlib` | Um pipeline de dois nós gera o gráfico da carga do RC |
 | 3 | **Assets reais**: o executor passa contexto (render, `STORAGE_DIR`) aos handlers e cada saída vira um `Asset` ligado ao render | `GET /assets?render_id=` lista o PNG da fatia 2 |
 | 4 | **Narração**: `tts.narrate` em pt-BR e en, gerando áudio como asset | Áudio narrando o texto da lição |

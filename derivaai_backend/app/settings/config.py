@@ -20,7 +20,9 @@ class Settings(BaseSettings):
     database_password: str = "derivaai"
     database_name: str = "derivaai"
 
+    # Shared Redis from devbutter_app/infra; every app gets its own queue on it.
     redis_url: str = "redis://localhost:6379/0"
+    redis_queue_name: str = "derivaai-renders"
     celery_task_always_eager: bool = False
     storage_dir: str = "./storage"
 

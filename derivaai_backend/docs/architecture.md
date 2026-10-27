@@ -32,7 +32,6 @@ derivaai_backend/
 ├── CLAUDE.md
 ├── README.md
 ├── alembic.ini
-├── docker-compose.yml
 ├── pyproject.toml
 ├── alembic/
 │   ├── env.py

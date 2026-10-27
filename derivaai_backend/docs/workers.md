@@ -4,7 +4,7 @@
 
 | Arquivo | Papel |
 |---|---|
-| `celery_app.py` | Instância Celery; broker e backend em `REDIS_URL`; `CELERY_TASK_ALWAYS_EAGER` para rodar síncrono em dev/teste |
+| `celery_app.py` | Instância Celery; broker e backend em `REDIS_URL`; fila padrão `REDIS_QUEUE_NAME` (`derivaai-renders`); `CELERY_TASK_ALWAYS_EAGER` para rodar síncrono em dev/teste |
 | `dispatch.py` | `enqueue_render(render_id)`: envia a task **pelo nome** (`send_task`), para a API nunca importar o corpo das tasks (evita ciclos) |
 | `executor.py` | Executor puro de grafos, sem I/O de banco |
 | `tasks.py` | Task `app.workers.tasks.run_render`: atualiza o render e chama o executor |

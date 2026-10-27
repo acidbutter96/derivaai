@@ -26,7 +26,7 @@ Python 3.13+, FastAPI, Pydantic v2, SQLAlchemy 2.0 async, Alembic, PostgreSQL, C
 ## Comandos
 
 ```bash
-docker compose up -d                                      # Redis (Postgres = shared-postgres, ver docs/setup.md)
+(cd ../../devbutter_app/infra && docker compose --env-file .env up -d shared-postgres redis)  # Postgres + Redis (docs/setup.md)
 poetry env use 3.13 && poetry install
 poetry run uvicorn app.main:app --reload                  # API em :8000/docs
 poetry run celery -A app.workers.celery_app worker -l info -P solo
@@ -66,7 +66,7 @@ poetry run alembic upgrade head
 ## Estado atual
 
 Esqueleto pronto: 5 domínios (`pipelines`, `lessons`, `nodes`, `renders`, `assets`), fila Celery, executor
-topológico (único handler real: `passthrough`), 28 testes passando. Fatia 1 (fundação) concluída, usando o Postgres compartilhado do devbutter_app (banco `derivaai`, porta 5436): migration
+topológico (único handler real: `passthrough`), 29 testes passando. Fatia 1 (fundação) concluída, usando o Postgres compartilhado do devbutter_app (banco `derivaai`, porta 5436): migration
 inicial gerada e validada (upgrade/downgrade) e render `passthrough` ponta a ponta com Postgres e Redis reais.
 Próximas fatias: [docs/roadmap-mvp.md](docs/roadmap-mvp.md).
 

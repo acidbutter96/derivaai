@@ -14,6 +14,7 @@
 | Primeira lição de aceitação: carga do circuito RC | Caso concreto para guiar as fatias |
 | Sem issues de GitHub por enquanto | Ainda não existe repositório |
 | Postgres compartilhado do devbutter_app (banco e role `derivaai`, `localhost:5436`), sem Postgres próprio; conexão por `DATABASE_*` | ADR-0008 do devbutter_app: um Postgres por ambiente; `DATABASE_URL` não é lida |
+| Redis compartilhado da infra do devbutter_app, fila própria `derivaai-renders` (`REDIS_QUEUE_NAME`); sem `docker-compose.yml` no derivaai | Mesmo padrão do Postgres e de `blob-jobs`/`relay-shared`; a fila padrão `celery` colidiria |
 | Worker com `-P solo` | Prefork usa `spawn` no macOS/3.13 e as tasks não executam; ver bugs abaixo |
 
 ## Em aberto

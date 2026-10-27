@@ -9,3 +9,5 @@ celery_app = Celery(
     include=["app.workers.tasks"],
 )
 celery_app.conf.task_always_eager = settings.celery_task_always_eager
+# Default queue is "celery"; on the shared Redis that would collide with other apps' workers.
+celery_app.conf.task_default_queue = settings.redis_queue_name

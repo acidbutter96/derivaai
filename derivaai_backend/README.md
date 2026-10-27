@@ -4,11 +4,11 @@ FastAPI backend (fastapibuilder-api pattern) for DerivaAI: node-editor pipelines
 engineering/physics lessons. Requires Python 3.13+.
 
 ```bash
-docker compose up -d   # Redis; Postgres vem do shared-postgres do devbutter_app/infra            # Postgres + Redis
+# Postgres and Redis come from devbutter_app/infra (one per environment; own db `derivaai`, queue `derivaai-renders`)
+(cd ../../devbutter_app/infra && docker network create devbutter_shared 2>/dev/null; docker compose --env-file .env up -d shared-postgres redis)
 poetry env use 3.13
 poetry install
 cp .env.example .env
-poetry run alembic revision --autogenerate -m "initial"
 poetry run alembic upgrade head
 poetry run uvicorn app.main:app --reload
 poetry run celery -A app.workers.celery_app worker -l info -P solo   # render worker

@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-    U[Author] --> FE["Node editor<br/>React + TypeScript + React Flow<br/>(planned)"]
+    U[Author] --> FE["Node editor<br/>Next.js 16 + React 19 + TypeScript + React Flow<br/>(scaffolded, editor planned)"]
     FE -->|REST JSON| API[FastAPI API]
     API --> DB[(PostgreSQL)]
     API -->|send_task by name| RQ[(Redis)]
@@ -108,7 +108,7 @@ flowchart TD
 ```
 derivaai/
 ├── docs/                    this folder (English, project-wide)
-├── derivaai_frontend/       empty, planned React app
+├── derivaai_frontend/       Next.js 16 app (scaffold only; node editor planned)
 └── derivaai_backend/
     ├── app/
     │   ├── main.py
@@ -118,11 +118,20 @@ derivaai/
     ├── alembic/             migrations (none generated yet)
     ├── docs/                Portuguese backend docs
     ├── tests/               per-domain tests, executor, decorators
-    ├── docker-compose.yml   Redis 7 (Postgres: shared-postgres of devbutter_app)
+    ├── (no compose: Postgres and Redis come from devbutter_app/infra)
     └── pyproject.toml       Poetry, Python >=3.13
 ```
 
 ## Stack
 
 FastAPI, Pydantic v2, SQLAlchemy 2.0 async, Alembic, PostgreSQL, Celery + Redis, Poetry.
-Planned for nodes: SymPy, SciPy, Matplotlib, Manim, FFmpeg, TTS. Planned frontend: React, TypeScript, React Flow.
+Planned for nodes: SymPy, SciPy, Matplotlib, Manim, FFmpeg, TTS. Frontend (Next.js 16, React 19, TypeScript, Yarn): installed KaTeX, lucide-react, clsx, Sass.
+
+Planned frontend libs:
+
+- `@xyflow/react` (React Flow): node editor, client-only (`"use client"` + `dynamic(..., { ssr: false })`).
+- Zustand: editor state.
+- TanStack Query: server state and polling of Celery job status.
+- `next-intl`: i18n (EN and pt-BR).
+- Zod: payload and form validation.
+- `openapi-typescript`: TypeScript types generated from the FastAPI OpenAPI schema.
