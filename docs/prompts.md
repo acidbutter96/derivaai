@@ -1,6 +1,6 @@
 # Série de prompts: implementar o roadmap do DerivaAI
 
-Prompts prontos para colar no **Antigravity** (agente com acesso ao repositório). Cada slice do
+Prompts prontos para colar em um agente de código com acesso ao repositório. Cada slice do
 [roadmap-mvp](../derivaai_backend/docs/roadmap-mvp.md) vira um prompt autocontido, com escopo, passos,
 arquivos-alvo, testes e critérios de aceite. Os prompts apontam para os docs do repo em vez de repeti-los,
 então o agente sempre trabalha com a versão atual.
@@ -8,7 +8,7 @@ então o agente sempre trabalha com a versão atual.
 Estado no momento da escrita: esqueleto do backend e slice 1 (fundação) prontos; frontend com telas
 mockadas (`derivaai_frontend/src/lib/mock`); slices 2 a 7 pendentes.
 
-## Como usar no Antigravity
+## Como usar
 
 1. Abra a raiz do repositório (`derivaai/`) como workspace, para o agente enxergar backend, frontend e docs.
 2. Cole o **Prompt 0** como regra do workspace (ou no início de cada conversa nova). Ele vale para todos os outros.
