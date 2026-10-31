@@ -19,10 +19,11 @@ Brazilian Portuguese).
 ## Status legend
 
 - **Implemented**: exists in `derivaai_backend/` today (5 domains, Celery queue, graph executor, tests).
-- **Planned**: designed but not coded yet (real node handlers, storage, TTS, Manim, FFmpeg, frontend).
+- **Planned**: designed but not coded yet (real node handlers, storage, TTS, Manim, FFmpeg, API wiring and React Flow in the frontend).
 
-Each section marks which one it describes. The frontend folder (`derivaai_frontend/`) is empty and
-no logo file exists yet, so everything in [design-ui.md](design-ui.md) is design intent.
+Each section marks which one it describes. The frontend (`derivaai_frontend/`, a submodule) ships mocked
+screens built from [`../design/`](../design/README.md); they read from `src/lib/mock`, not from the API.
+No logo file exists yet, so the brand in [design-ui.md](design-ui.md) is design intent.
 
 ## Related
 

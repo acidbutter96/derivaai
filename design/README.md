@@ -1,7 +1,7 @@
 # DerivaAI design
 
 Visual design for the DerivaAI frontend: design system, layout and wireframes. Status: **design proposal**,
-no frontend code yet (`derivaai_frontend/` is empty). It replaces the thin UI notes in
+implemented in `derivaai_frontend/` as mocked screens (not wired to the API yet). It replaces the thin UI notes in
 [`../docs/design-ui.md`](../docs/design-ui.md) and assumes the backend model in
 [`../docs/design-v2.md`](../docs/design-v2.md) (typed ports, per-node runs, cache, SSE).
 

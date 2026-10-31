@@ -4,7 +4,7 @@
 
 ```mermaid
 flowchart LR
-    U[Author] --> FE["Node editor<br/>Next.js 16 + React 19 + TypeScript + React Flow<br/>(scaffolded, editor planned)"]
+    U[Author] --> FE["Node editor<br/>Next.js 16 + React 19 + TypeScript + React Flow<br/>(mocked screens, API wiring planned)"]
     FE -->|REST JSON| API[FastAPI API]
     API --> DB[(PostgreSQL)]
     API -->|send_task by name| RQ[(Redis)]
@@ -108,7 +108,7 @@ flowchart TD
 ```
 derivaai/
 ├── docs/                    this folder (English, project-wide)
-├── derivaai_frontend/       Next.js 16 app (scaffold only; node editor planned)
+├── derivaai_frontend/       Next.js 16 app (mocked screens; real API and React Flow planned)
 └── derivaai_backend/
     ├── app/
     │   ├── main.py
