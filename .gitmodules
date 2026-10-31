@@ -1,8 +1,8 @@
 [submodule "derivaai_backend"]
 	path = derivaai_backend
-	url = https://github.com/acidbutter96/derivaai-backend.git
+	url = ../derivaai-backend.git
 	branch = development
 [submodule "derivaai_frontend"]
 	path = derivaai_frontend
-	url = https://github.com/acidbutter96/derivaai-frontend.git
+	url = ../derivaai-frontend.git
 	branch = development
