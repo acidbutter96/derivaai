@@ -11,7 +11,7 @@ Brazilian Portuguese).
 | [rc-lesson-flow.md](rc-lesson-flow.md) | The acceptance lesson (RC circuit charging) as a node pipeline, end to end |
 | [design-ui.md](design-ui.md) | Early UI notes, **superseded** by [`../design/`](../design/README.md) (design system, layout, wireframes) |
 | [design-v2.md](design-v2.md) | **Proposal**: typed ports, nodes as code, pipeline versions, per-node runs with cache, blobs, SSE |
-| [prompts.md](prompts.md) | Series of ready-to-run prompts (Antigravity) that implement roadmap slices 2 to 7 |
+| [prompts.md](prompts.md) | Series of ready-to-run prompts that implement roadmap slices 2 to 7 |
 
 > The prototype docs above describe what is implemented today. [design-v2.md](design-v2.md) proposes replacing
 > parts of it and is pending approval.
